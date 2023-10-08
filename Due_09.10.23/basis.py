@@ -1,4 +1,4 @@
-class Matrix:
+class Matrix:           # Точь-в-точь тот же класс из задания Ильи про матрицы. Метод ортогонализации находтися на 155 строчке 
     
     def __init__(self, matrix: list, rows: int = None, cols: int = None):
         self.matrix = matrix
@@ -155,25 +155,23 @@ class Matrix:
     def get_basis(self, basis: list = None, iteration: int = 0) -> list:
         if basis is None:
             basis = []
-        if iteration == self.cols:
+        if iteration == self.rows:
             result = []
             for vector in basis:
                 norm = 0
                 for v in vector.vector:
                     norm = norm + v**2
                 norm = norm**0.5
-                result.append(norm)
+                result.append((vector / norm).vector)
             return result
-        current_basis_vector = Vector(self.matrix[iteration])
+        current_basis_vector = Vector(self.T().matrix[iteration])
         for vector in basis:
             try:
-                print(f"Previous basis vector: {vector.vector}\nCurrent Vector: {current_basis_vector.vector}")
                 projection = vector * ((current_basis_vector @ vector) / (vector @ vector))
                 current_basis_vector = current_basis_vector - projection
             except ZeroDivisionError:
-                return self.get_basis(basis, iteration+1)
-        if sum(current_basis_vector.vector) != 0:
-            print(f"Adding {current_basis_vector.vector} to the list.")
+                continue
+        if current_basis_vector.vector.count(0) != len(current_basis_vector.vector):
             basis.append(current_basis_vector)
         return self.get_basis(basis, iteration+1)
 
@@ -237,15 +235,16 @@ class Vector():
                 res_vector = [0 for i in range(self.length)]
                 for i in range(self.length):
                     res_vector[i] = self.vector[i] / other.vector[i]
-                return sum(res_vector)
+                return Vector(res_vector)
             else:
                 return "Невозможно умножить несоразмерные векторы!"
         elif isinstance(other, (int, float)):
             res_vector = []
             for i in range(self.length):
                 res_vector.append(self.vector[i] / other)
-            return sum(res_vector)
+            return Vector(res_vector)
 
 
-test_matrix = Matrix([[1, 1, 1], [1, 2, 3], [1, 3, 5]])
-print(test_matrix.get_basis())
+if __name__ == "__main__":
+    test_matrix = Matrix([[1, 1, 1, 1], [1, 2, 3, 4], [1, 3, 5, 7], [2, 4, 6, 8]])
+    print(test_matrix.get_basis())

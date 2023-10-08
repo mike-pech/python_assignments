@@ -1,0 +1,1 @@
+# basis_vector_n = vector_n - (<vector_n, basis_vector_1> / <basis_vector_1, basis_vector_1>) * basis_vector_1 - ... - (<vector_n, basis_vector_n-1> / <basis_vector_n-1, basis_vector_n-1>) * basis_vector_n-1
