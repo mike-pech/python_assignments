@@ -246,5 +246,5 @@ class Vector():
 
 
 if __name__ == "__main__":
-    test_matrix = Matrix([[1, 1, 1, 1], [1, 2, 3, 4], [1, 3, 5, 7], [2, 4, 6, 8]])
+    test_matrix = Matrix([[1, 1, 0], [2, 2, 0], [1, 2, 1]])
     print(test_matrix.get_basis())
