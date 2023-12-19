@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import spacy
 nlp = spacy.load("en_core_web_sm")
+hybridtfidf = HybridTfidf(threshold=7)
 
 
 PREFIX = "STOIC: "
@@ -24,9 +25,11 @@ def initialize() -> None:
     return sent_tokens, replies
 
 def response(user_response: str, sent_tokens: list, replies: list) -> str:
+
+    user_response = " ".join([word.lemma_ for word in nlp(user_response) \
+                            if not word.is_stop and word.text.isalpha()])
     sent_tokens.append(user_response)
 
-    hybridtfidf = HybridTfidf(threshold=7)
     hybridtfidf.fit(sent_tokens)
 
     tfidf = np.array(hybridtfidf.transform(sent_tokens))
